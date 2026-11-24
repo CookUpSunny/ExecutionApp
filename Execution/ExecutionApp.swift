@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import UserNotifications
 
 private let executionRed = Color(red: 0.84, green: 0.035, blue: 0.125)
@@ -25,10 +26,12 @@ struct Commitment: Identifiable, Codable {
     @Published private(set) var commitments: [Commitment] = []
     @Published var notificationStatus: String = ""
     private let key = "execution.commitments.v1"
+    private let defaults: UserDefaults
     private let center = UNUserNotificationCenter.current()
 
-    init() {
-        if let data = UserDefaults.standard.data(forKey: key) {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        if let data = defaults.data(forKey: key) {
             do { commitments = try JSONDecoder().decode([Commitment].self, from: data) }
             catch { notificationStatus = "Saved commitments could not be read." }
         }
@@ -52,7 +55,7 @@ struct Commitment: Identifiable, Codable {
     }
 
     private func save() {
-        do { UserDefaults.standard.set(try JSONEncoder().encode(commitments), forKey: key) }
+        do { defaults.set(try JSONEncoder().encode(commitments), forKey: key) }
         catch { notificationStatus = "Could not save commitments." }
     }
 
