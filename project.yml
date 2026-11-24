@@ -20,3 +20,21 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
+  ExecutionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [ExecutionTests]
+    dependencies:
+      - target: Execution
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.makemagic.execution.tests
+schemes:
+  Execution:
+    build:
+      targets:
+        Execution: all
+    test:
+      targets:
+        - ExecutionTests
